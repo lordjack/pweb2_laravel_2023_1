@@ -35,3 +35,5 @@ rotas
 routes/web.php
 */
 Route::get('/usuario', [UsuarioController::class, 'index']);
+Route::get('/usuario/create', [UsuarioController::class, 'create']);
+Route::post('/usuario/store', [UsuarioController::class, 'store']);
