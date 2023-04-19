@@ -37,3 +37,6 @@ routes/web.php
 Route::get('/usuario', [UsuarioController::class, 'index']);
 Route::get('/usuario/create', [UsuarioController::class, 'create']);
 Route::post('/usuario/store', [UsuarioController::class, 'store']);
+Route::get('/usuario/edit/{id}', [UsuarioController::class, 'edit']);
+Route::post('/usuario/update/{id}', [UsuarioController::class, 'update']);
+Route::get('/usuario/destroy/{id}', [UsuarioController::class, 'destroy']);
