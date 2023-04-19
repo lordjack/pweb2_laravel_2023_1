@@ -45,7 +45,7 @@ class UsuarioController extends Controller
 
           return \redirect()->action("App\Http\Controllers\UsuarioController@index");
         }
-
+//
 
      function destroy($id){
         $usuario = Usuario::findOrFail($id);
