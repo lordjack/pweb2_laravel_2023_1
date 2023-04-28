@@ -1,3 +1,11 @@
+# Quando baixar o projeto o que fazer 
+**Instalar as dependências do projeto**  
+`composer install`  
+
+**Criar as tabelas do banco de dados do projeto**  
+`php artisan migrate` 
+
+
 ----
 ## Diretorios do projeto
 **Controller**
