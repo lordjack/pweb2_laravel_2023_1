@@ -10,8 +10,9 @@
   <body>
   <div class="container">
     <h1>Listagem de Usuários {{ request()->id }}</h1>
-    <form action="UsuarioList.php" method="post">
-      <div class="row">
+    <form action="{{ action('App\Http\Controllers\UsuarioController@search') }}" method="post">
+        @csrf
+     <div class="row">
         <div class="col-2">
           <select name="campo" class="form-select">
             <option value="nome">Nome</option>

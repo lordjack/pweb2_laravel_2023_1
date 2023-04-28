@@ -40,3 +40,4 @@ Route::post('/usuario/store', [UsuarioController::class, 'store']);
 Route::get('/usuario/edit/{id}', [UsuarioController::class, 'edit']);
 Route::post('/usuario/update/{id}', [UsuarioController::class, 'update']);
 Route::get('/usuario/destroy/{id}', [UsuarioController::class, 'destroy']);
+Route::post('/usuario/search', [UsuarioController::class, 'search']);
