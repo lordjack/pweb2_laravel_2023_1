@@ -5,7 +5,6 @@
 **Criar as tabelas do banco de dados do projeto**  
 `php artisan migrate` 
 
-
 ----
 ## Diretorios do projeto
 **Controller**
@@ -31,13 +30,25 @@
 **Arquivo do banco de dados**  
 `database/sql/db_aula.sql`
 
+**Criar um arquivo para inserir registros no banco de dados**  
+`php artisan make:seeder CategoriaSeeder`
+
+**Inserir registros no banco de dados**  
+`php artisan db::seed CategoriaSeeder`
+
+
 ## Comandos básicos do Laravel  
+**Listar todos os comandos do Laravel**  
+`php artisan list`
+
 **Criar um arquivo Model**  
 `php artisan make:model Usuario`
 
 **Criar um arquivo Controller**  
 `php artisan make:controller Usuario`
 
+**Habilitar o envio de arquivo para o Storage**  
+`php artisan storage:link`
 
 **Iniciar o sistema**  
 `php artisan serve`

@@ -33,11 +33,11 @@
             </div>
         @endif
 
-        <form action='{{ $action }}' method="POST">
+        <form action='{{ $action }}' method="POST" enctype="multipart/form-data">
             @csrf
             <input type="hidden" name="id"
                 value="@if (!empty(old('id'))) {{ old('id') }} @elseif(!empty($usuario->id)) {{ $usuario->id }} @else {{ '' }} @endif" /><br>
-            <div class="col-3">
+           <div class="col-3">
                 <label class="form-label">Nome</label><br>
                 <input type="text" class="form-control" name="nome"
                     value="@if (!empty(old('nome'))) {{ old('nome') }} @elseif(!empty($usuario->nome)) {{ $usuario->nome }} @else {{ '' }} @endif" /><br>
@@ -59,6 +59,15 @@
                         <option value="{{$item->id}}">{{$item->nome}}</option>
                     @endforeach
                 </select>
+            </div>
+            @php
+            $nome_imagem =!empty($usuario->imagem) ? $usuario->imagem :'sem_imagem.jpg';
+            @endphp
+            <div class="col-6">
+                <br>
+                <img class="img-thumbnail" src="/storage/{{$nome_imagem }}" width="300px" />
+                <br><br>
+                <input type="file" class="form-control" name="imagem" /><br>
             </div>
             <button class="btn btn-success" type="submit">
                 <i class="fa-solid fa-save"></i> Salvar

@@ -28,6 +28,8 @@ class UsuarioController extends Controller
             'nome'=>"required | max: 120",
             'telefone'=>"required | max: 20",
             'email'=>" nullable | email | max: 100",
+            'categoria_id'=>" nullable",
+            'imagem'=>" nullable|image|mimes:jpeg,jpg,png|max:2048",
         ],
         [
             'nome.required'=>"O nome é obrigatório",
@@ -37,11 +39,23 @@ class UsuarioController extends Controller
             'email.max'=>"Só é permitido 100 caracteres",
         ]);
 
+        $imagem = $request->file('imagem');
+        if($imagem){
+            $nome_arquivo = date('YmdHis').".".$imagem->getClientOriginalExtension();
+
+            $diretorio = 'imagem/';
+            $imagem->storeAs($diretorio,$nome_arquivo,'public');
+            $nome_arquivo =$diretorio.$nome_arquivo;
+        }
+
       //dd( $request->nome);
         Usuario::create([
             'nome'=> $request->nome,
             'telefone'=> $request->telefone,
-            'email'=> $request->email]);
+            'email'=> $request->email,
+            'categoria_id'=> $request->categoria_id,
+            'imagem'=> $nome_arquivo
+        ]);
 
         return \redirect()->action("App\Http\Controllers\UsuarioController@index");
      }
@@ -64,6 +78,8 @@ class UsuarioController extends Controller
             'nome'=>"required | max: 120",
             'telefone'=>"required | max: 20",
             'email'=>" nullable | email | max: 100",
+            'categoria_id'=>" nullable",
+            'imagem'=>" nullable|image|mimes:jpeg,jpg,png|max:2048",
         ],
         [
             'nome.required'=>"O nome é obrigatório",
@@ -72,10 +88,23 @@ class UsuarioController extends Controller
             'telefone.max'=>"Só é permitido 20 caracteres",
             'email.max'=>"Só é permitido 100 caracteres",
         ]);
+
+        $imagem = $request->file('imagem');
+        if($imagem){
+            $nome_arquivo = date('YmdHis').".".$imagem->getClientOriginalExtension();
+
+            $diretorio = 'imagem/';
+            $imagem->storeAs($diretorio,$nome_arquivo,'public');
+            $nome_arquivo =$diretorio.$nome_arquivo;
+        }
+
           Usuario::updateOrCreate(['id'=>$request->id], [
               'nome'=> $request->nome,
               'telefone'=> $request->telefone,
-              'email'=> $request->email]);
+              'email'=> $request->email,
+              'categoria_id'=> $request->categoria_id,
+              'imagem'=> $nome_arquivo
+            ]);
 
         return \redirect()->action("App\Http\Controllers\UsuarioController@index");
     }

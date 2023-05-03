@@ -11,7 +11,11 @@ class Usuario extends Model
     protected $table = "usuario";
 
     protected $fillable = [
-        'nome', 'telefone', 'email'
+        'nome', 'telefone', 'email','categoria_id', 'imagem'
     ];
+
+    public function categoria(){
+        return $this->belongsTo(Categoria::class,'categoria_id','id');
+    }
 
 }

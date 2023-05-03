@@ -22,7 +22,7 @@ return new class extends Migration
         Schema::disableForeignKeyConstraints();
 
         Schema::table('usuario', function (Blueprint $table) {
-            $table->foreignId('usuario_id')->constrained('usuario')->after('email');
+            $table->foreignId('categoria_id')->nullable()->constrained('categoria')->default(null);
         });
 
         Schema::enableForeignKeyConstraints();

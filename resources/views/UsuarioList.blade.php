@@ -37,12 +37,11 @@
           <th scope="col">Nome</th>
           <th scope="col">Telefone</th>
           <th scope="col">Email</th>
+          <th scope="col">Categoria</th>
           <th scope="col"></th>
           <th scope="col"></th>
         </tr>
-      </thead> <!--  composer install
-                     php artisan migrate
-      -->
+      </thead> 
       <tbody>
          @foreach ($usuarios as $item )
             <tr>
@@ -50,6 +49,7 @@
               <td>{{$item->nome}}</td>
               <td>{{$item->telefone}}</td>
               <td>{{$item->email}}</td>
+              <td>{{$item->categoria->nome}}</td>
               <td><a href="{{ action('App\Http\Controllers\UsuarioController@edit', $item->id)}}"><i class='fa-solid fa-pen-to-square' style='color:orange;'></i></a></td>
               <td><a href="{{ action('App\Http\Controllers\UsuarioController@destroy', $item->id)}}"
                       onclick='return confirm("Deseja Excluir?")'
