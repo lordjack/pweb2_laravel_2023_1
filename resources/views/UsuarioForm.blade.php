@@ -12,10 +12,10 @@
         integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
 </head>
 @php
-    if (!empty(Request::route('id'))) {
-        $action = action('App\Http\Controllers\UsuarioController@update', $usuario->id);
+    if (!empty($usuario->id)) {
+        $route = route('usuario.update', $usuario->id);
     } else {
-        $action = action('App\Http\Controllers\UsuarioController@store');
+        $route = route('usuario.store');
     }
 @endphp
 
@@ -33,11 +33,15 @@
             </div>
         @endif
 
-        <form action='{{ $action }}' method="POST" enctype="multipart/form-data">
+        <form action='{{ $route }}' method="POST" enctype="multipart/form-data">
             @csrf
+            @if (!empty($usuario->id))
+                @method('PUT')
+            @endif
+
             <input type="hidden" name="id"
                 value="@if (!empty(old('id'))) {{ old('id') }} @elseif(!empty($usuario->id)) {{ $usuario->id }} @else {{ '' }} @endif" /><br>
-           <div class="col-3">
+            <div class="col-3">
                 <label class="form-label">Nome</label><br>
                 <input type="text" class="form-control" name="nome"
                     value="@if (!empty(old('nome'))) {{ old('nome') }} @elseif(!empty($usuario->nome)) {{ $usuario->nome }} @else {{ '' }} @endif" /><br>
@@ -55,25 +59,25 @@
             <div class="col-3">
                 <label class="form-label">Categoria</label><br>
                 <select name="categoria_id" class="form-select">
-                    @foreach ($categorias as $item )
-                        <option value="{{$item->id}}">{{$item->nome}}</option>
+                    @foreach ($categorias as $item)
+                        <option value="{{ $item->id }}">{{ $item->nome }}</option>
                     @endforeach
                 </select>
             </div>
             @php
-            $nome_imagem =!empty($usuario->imagem) ? $usuario->imagem :'sem_imagem.jpg';
+                $nome_imagem = !empty($usuario->imagem) ? $usuario->imagem : 'sem_imagem.jpg';
             @endphp
             <div class="col-6">
                 <br>
-                <img class="img-thumbnail" src="/storage/{{$nome_imagem }}" width="300px" />
+                <img class="img-thumbnail" src="/storage/{{ $nome_imagem }}" width="300px" />
                 <br><br>
                 <input type="file" class="form-control" name="imagem" /><br>
             </div>
             <button class="btn btn-success" type="submit">
                 <i class="fa-solid fa-save"></i> Salvar
             </button>
-            <a href='{{ action('App\Http\Controllers\UsuarioController@index') }}' class="btn btn-primary"><i
-                    class="fa-solid fa-arrow-left"></i> Voltar</a>
+            <a href='{{ route('usuario.index') }}' class="btn btn-primary"><i class="fa-solid fa-arrow-left"></i>
+                Voltar</a>
         </form>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js"

@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UsuarioController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -8,36 +10,33 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 |
 | Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
+| routes are loaded by the RouteServiceProvider and all of them will
+| be assigned to the "web" middleware group. Make something great!
 |
 */
-use App\Http\Controllers\UsuarioController;
 
 Route::get('/', function () {
     return view('welcome');
 });
-/*
-Route::get('/usuario/{param}', function () {
-    return view("UsuarioList");
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::resource('usuario', UsuarioController::class);
+    Route::post('usuario/search', [UsuarioController::class, 'search']);
+    Route::get('/profile', [ProfileController::class, 'edit'])->name(
+        'profile.edit'
+    );
+    Route::patch('/profile', [ProfileController::class, 'update'])->name(
+        'profile.update'
+    );
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name(
+        'profile.destroy'
+    );
 });
 
-controller
-app/http/controller
-
-model
-app/http/Models
-
-View
-resources/views/nome_arquivo.blade.php
-
-rotas
-routes/web.php
-*/
-Route::get('/usuario', [UsuarioController::class, 'index']);
-Route::get('/usuario/create', [UsuarioController::class, 'create']);
-Route::post('/usuario/store', [UsuarioController::class, 'store']);
-Route::get('/usuario/edit/{id}', [UsuarioController::class, 'edit']);
-Route::post('/usuario/update/{id}', [UsuarioController::class, 'update']);
-Route::get('/usuario/destroy/{id}', [UsuarioController::class, 'destroy']);
-Route::post('/usuario/search', [UsuarioController::class, 'search']);
+require __DIR__ . '/auth.php';
