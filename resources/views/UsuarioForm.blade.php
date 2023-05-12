@@ -1,26 +1,14 @@
-<!doctype html>
-<html lang="en">
+<x-guest-layout>
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap demo</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
-</head>
-@php
-    if (!empty($usuario->id)) {
-        $route = route('usuario.update', $usuario->id);
-    } else {
-        $route = route('usuario.store');
-    }
-@endphp
+    @php
+        if (!empty($usuario->id)) {
+            $route = route('usuario.update', $usuario->id);
+        } else {
+            $route = route('usuario.store');
+        }
+    @endphp
 
-<body>
-    <div class="container">
+    @section('conteudo')
         <h1>Formulário Usuário</h1>
 
         @if ($errors->any())
@@ -79,10 +67,6 @@
             <a href='{{ route('usuario.index') }}' class="btn btn-primary"><i class="fa-solid fa-arrow-left"></i>
                 Voltar</a>
         </form>
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N" crossorigin="anonymous">
-    </script>
-</body>
-
-</html>
+        </div>
+    @endsection
+    <x-guest-layout>
