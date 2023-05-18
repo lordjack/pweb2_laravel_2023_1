@@ -27,7 +27,9 @@ Route::get('/dashboard', function () {
 
 Route::middleware('auth')->group(function () {
     Route::resource('usuario', UsuarioController::class);
-    Route::post('usuario/search', [UsuarioController::class, 'search']);
+    Route::post('usuario/search', [UsuarioController::class, 'search'])->name(
+        'usuario.search'
+    );
     Route::get('/profile', [ProfileController::class, 'edit'])->name(
         'profile.edit'
     );

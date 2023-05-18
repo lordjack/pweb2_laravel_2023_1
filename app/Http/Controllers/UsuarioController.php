@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Usuario;
 use App\Models\Categoria;
+use Illuminate\Support\Facades\Storage;
 
 class UsuarioController extends Controller
 {
@@ -19,7 +20,7 @@ class UsuarioController extends Controller
     function create()
     {
         $categorias = Categoria::orderBy('nome')->get();
-
+        //dd($categorias);
         return view('UsuarioForm')->with(['categorias' => $categorias]);
     }
 
@@ -42,29 +43,32 @@ class UsuarioController extends Controller
             ]
         );
 
-        $imagem = $request->file('imagem');
-        $nome_arquivo = '';
-        if ($imagem) {
-            $nome_arquivo =
-                date('YmdHis') . '.' . $imagem->getClientOriginalExtension();
-
-            $diretorio = 'imagem/';
-            $imagem->storeAs($diretorio, $nome_arquivo, 'public');
-            $nome_arquivo = $diretorio . $nome_arquivo;
-        }
-
-        //dd( $request->nome);
-        Usuario::create([
+        //adiciono os dados do formulário ao vetor
+        $dados = [
             'nome' => $request->nome,
             'telefone' => $request->telefone,
             'email' => $request->email,
             'categoria_id' => $request->categoria_id,
-            'imagem' => $nome_arquivo,
-        ]);
+        ];
 
-        return \redirect()->action(
-            'App\Http\Controllers\UsuarioController@index'
-        );
+        $imagem = $request->file('imagem');
+        $nome_arquivo = '';
+        //verifica se o campo imagem foi passado uma imagem
+        if ($imagem) {
+            $nome_arquivo = date('YmdHis') . '.' . $imagem->getClientOriginalExtension();
+
+            $diretorio = 'imagem/';
+            //salva a imagem em uma pasta
+            $imagem->storeAs($diretorio, $nome_arquivo, 'public');
+            //adiciona ao vetor o diretorio do arquivo e o nome
+            $dados['imagem'] = $diretorio . $nome_arquivo;
+        }
+
+        //dd( $request->nome);
+        //passa o vetor com os dados do formulário como parametro para ser salvo
+        Usuario::create($dados);
+
+        return \redirect('usuario')->with('success', 'Cadastrado com sucesso!');
     }
 
     function edit($id)
@@ -113,43 +117,46 @@ class UsuarioController extends Controller
             ]
         );
 
+        //adiciono os dados do formulário ao vetor
+        $dados =  [
+            'nome' => $request->nome,
+            'telefone' => $request->telefone,
+            'email' => $request->email,
+            'categoria_id' => $request->categoria_id,
+        ];
+
         $imagem = $request->file('imagem');
-        $nome_arquivo = '';
+        //verifica se o campo imagem foi passado uma imagem
         if ($imagem) {
-            $nome_arquivo =
-                date('YmdHis') . '.' . $imagem->getClientOriginalExtension();
+            $nome_arquivo = date('YmdHis') . '.' . $imagem->getClientOriginalExtension();
 
             $diretorio = 'imagem/';
+            //salva a imagem em uma pasta
             $imagem->storeAs($diretorio, $nome_arquivo, 'public');
-            $nome_arquivo = $diretorio . $nome_arquivo;
+            //adiciona ao vetor o diretorio do arquivo e o nome
+            $dados['imagem'] = $diretorio . $nome_arquivo;
         }
 
+        //metodo para atualizar passando o vetor com os dados do form e o id
         Usuario::updateOrCreate(
             ['id' => $request->id],
-            [
-                'nome' => $request->nome,
-                'telefone' => $request->telefone,
-                'email' => $request->email,
-                'categoria_id' => $request->categoria_id,
-                'imagem' => $nome_arquivo,
-            ]
+            $dados
         );
 
-        return \redirect()->action(
-            'App\Http\Controllers\UsuarioController@index'
-        );
+        return \redirect('usuario')->with('success', 'Atualizado com sucesso!');
     }
-    //
 
     function destroy($id)
     {
         $usuario = Usuario::findOrFail($id);
 
+        //verifica se existe o arquivo vinculado ao registro e depois remove
+        if (Storage::disk('public')->exists($usuario->imagem)) {
+            Storage::disk('public')->delete($usuario->imagem);
+        }
         $usuario->delete();
 
-        return \redirect()->action(
-            'App\Http\Controllers\UsuarioController@index'
-        );
+        return \redirect('usuario')->with('success', 'Removido com sucesso!');
     }
 
     function search(Request $request)
@@ -168,6 +175,3 @@ class UsuarioController extends Controller
         return view('UsuarioList')->with(['usuarios' => $usuarios]);
     }
 }
-// npm install --save-dev vite laravel-vite-plugin
-// npm install --save-dev @vitejs/plugin-vue
-// npm run build
