@@ -27,20 +27,8 @@ class UsuarioController extends Controller
     function store(Request $request)
     {
         $request->validate(
-            [
-                'nome' => 'required | max: 120',
-                'telefone' => 'required | max: 20',
-                'email' => ' nullable | email | max: 100',
-                'categoria_id' => ' nullable',
-                'imagem' => ' nullable|image|mimes:jpeg,jpg,png|max:2048',
-            ],
-            [
-                'nome.required' => 'O nome é obrigatório',
-                'nome.max' => 'Só é permitido 120 caracteres',
-                'telefone.required' => 'O telefone é obrigatório',
-                'telefone.max' => 'Só é permitido 20 caracteres',
-                'email.max' => 'Só é permitido 100 caracteres',
-            ]
+            Usuario::rules(),
+            Usuario::messages()
         );
 
         //adiciono os dados do formulário ao vetor
@@ -101,22 +89,10 @@ class UsuarioController extends Controller
     {
         //dd( $request->nome);
         $request->validate(
-            [
-                'nome' => 'required | max: 120',
-                'telefone' => 'required | max: 20',
-                'email' => ' nullable | email | max: 100',
-                'categoria_id' => ' nullable',
-                'imagem' => ' nullable|image|mimes:jpeg,jpg,png|max:2048',
-            ],
-            [
-                'nome.required' => 'O nome é obrigatório',
-                'nome.max' => 'Só é permitido 120 caracteres',
-                'telefone.required' => 'O telefone é obrigatório',
-                'telefone.max' => 'Só é permitido 20 caracteres',
-                'email.max' => 'Só é permitido 100 caracteres',
-            ]
+            Usuario::rules(),
+            Usuario::messages()
         );
-
+        
         //adiciono os dados do formulário ao vetor
         $dados =  [
             'nome' => $request->nome,
